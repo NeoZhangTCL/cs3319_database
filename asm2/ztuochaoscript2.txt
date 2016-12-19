@@ -1,0 +1,104 @@
+use ztuochaodb;
+
+insert into movie values
+    (100,"Star Wars",1977),
+    (101,"Up",2009),
+    (102,"Pulp Fiction",1994),
+    (103,"Aloha",2015),
+    (104,"The Martian",2015),
+    (105,"The Empire Strikes Back",1980),
+    (106,"Midnight In The Garden Of Good and Evil",1997),
+    (107,"Tommy Boy",1995),
+    (108,"Die Hard",1988),
+    (109,"There's Something About Mary",1998),
+    (110,"Two Weeks Notice",2002),
+    (111,"Back To The Future",1985),
+    (112,"The Shawshank Redemption",1994);
+
+select * from movie;
+
+insert into customer values
+    (222,"Will","Beldman","M","wbeldma@uwo.ca"),
+    (223,"Neo","Zhang","M","ztuochao@uwo.ca"),
+    (224,"Bill","Clinton","M","billy@prez.com"),
+    (225,"Hillary","Clinton","F","nextprezmaybe@prez.com"),
+    (226,"Donald","Trump","M","nextprezalso@prez.com"),
+    (227,"Gary","Johnson","M","nextpreztoo@prez.com"),
+    (228,"Jill","Stein","F","nextprezaswell@prez.com"),
+    (229,"Barack","Obama","M","lastprez@prez.com");
+
+select * from customer;
+
+insert into genre values
+    ("Action", 100),
+    ("Animated", 101),
+    ("Action", 102),
+    ("Action", 105),
+    ("Action", 108),
+    ("Action", 104),
+    ("Action", 111),
+    ("Romance",103),
+    ("Romance",110),
+    ("Comedy",109),
+    ("Comedy",110),
+    ("Comedy",107),
+    ("Comedy",111),
+    ("Drama",106),
+    ("Drama",112),
+    ("SciFi",100),
+    ("SciFi",104),
+    ("SciFi",105),
+    ("SciFi",111);
+
+select * from genre;
+
+insert into theatre values (1,30),(2,5),(3,100),(4,30),(5,6);
+
+select * from theatre;
+
+insert into showing values
+    (333,"2016-02-11","21:30:00",1,100),
+    (334,"2016-02-11","19:30:00",2,100),
+    (335,"2016-02-11","19:00:00",3,101),
+    (337,"2016-03-12","19:00:00",1,102),
+    (338,"2016-03-12","21:00:00",1,103),
+    (339,"2016-03-13","19:00:00",2,103),
+    (340,"2016-03-20","19:00:00",1,103),
+    (341,"2016-03-20","21:00:00",1,104),
+    (348,"2016-03-22","16:30:00",4,112),
+    (346,"2016-03-22","20:30:00",2,107),
+    (345,"2016-03-22","21:00:00",3,108),
+    (342,"2016-03-20","19:00:00",2,109),
+    (344,"2016-03-21","19:00:00",1,110),
+    (347,"2016-03-23","22:00:00",1,110),
+    (336,"2016-02-11","21:00:00",2,111),
+    (349,"2016-03-24","16:30:00",4,112);
+
+select * from showing;
+
+insert into selects values
+    (222,333,5,4.00),
+    (222,340,1,12.00),
+    (222,334,3,10.00),
+    (222,346,4,5.00),
+    (223,334,5,30.00),
+    (223,340,1,5.00),
+    (223,349,5,5.00),
+    (224,334,4,20.00),
+    (226,334,2,100.00),
+    (225,334,1,5.00),
+    (229,347,5,12.00),
+    (229,334,3,5.00);
+
+select * from selects;
+
+update customer set firstname="Sue" where firstname="Jill";
+
+select * from customer;
+
+update selects a
+    join showing b on a.showingID = b.showingID
+    set a.rating = 5
+    where b.showingMovieID = 100;
+
+select * from selects;

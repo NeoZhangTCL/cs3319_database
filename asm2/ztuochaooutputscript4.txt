@@ -1,0 +1,203 @@
+--------------
+create view ztuochaoview as
+    select distinct c.firstname,c.lastname,sel.rating,m.movieName
+    from selects sel
+    left outer join customer c
+        on sel.customerID=c.customerID
+    left outer join showing sho
+        on sho.showingID=sel.showingID
+    left outer join movie m
+        on sho.showingMovieID=m.movieID
+--------------
+
+--------------
+select * from ztuochaoview
+--------------
+
+firstname	lastname	rating	movieName
+Will	Beldman	5	Star Wars
+Will	Beldman	1	Aloha
+Will	Beldman	4	Tommy Boy
+Neo	Zhang	5	Star Wars
+Neo	Zhang	1	Aloha
+Neo	Zhang	5	The Shawshank Redemption
+Bill	Clinton	5	Star Wars
+Donald	Trump	5	Star Wars
+Hillary	Clinton	5	Star Wars
+Barack	Obama	5	Two Weeks Notice
+Barack	Obama	5	Star Wars
+--------------
+select * from customer
+--------------
+
+customerID	firstname	lastname	sex	email
+222	Will	Beldman	M	wbeldma@uwo.ca
+223	Neo	Zhang	M	ztuochao@uwo.ca
+224	Bill	Clinton	M	billy@prez.com
+225	Hillary	Clinton	F	nextprezmaybe@prez.com
+226	Donald	Trump	M	nextprezalso@prez.com
+227	Gary	Johnson	M	nextpreztoo@prez.com
+228	Sue	Stein	F	nextprezaswell@prez.com
+229	Barack	Obama	M	lastprez@prez.com
+--------------
+select * from selects
+--------------
+
+customerID	showingID	rating	paid
+222	333	5	4.00
+222	340	1	12.00
+222	334	5	10.00
+222	346	4	5.00
+223	334	5	30.00
+223	340	1	5.00
+223	349	5	5.00
+224	334	5	20.00
+226	334	5	100.00
+225	334	5	5.00
+229	347	5	12.00
+229	334	5	5.00
+--------------
+delete selects
+    from selects
+    left join customer on selects.customerID = customer.customerID
+    where lastname="Trump"
+--------------
+
+--------------
+delete from customer where lastname="Trump"
+--------------
+
+--------------
+select * from customer
+--------------
+
+customerID	firstname	lastname	sex	email
+222	Will	Beldman	M	wbeldma@uwo.ca
+223	Neo	Zhang	M	ztuochao@uwo.ca
+224	Bill	Clinton	M	billy@prez.com
+225	Hillary	Clinton	F	nextprezmaybe@prez.com
+227	Gary	Johnson	M	nextpreztoo@prez.com
+228	Sue	Stein	F	nextprezaswell@prez.com
+229	Barack	Obama	M	lastprez@prez.com
+--------------
+select * from selects
+--------------
+
+customerID	showingID	rating	paid
+222	333	5	4.00
+222	340	1	12.00
+222	334	5	10.00
+222	346	4	5.00
+223	334	5	30.00
+223	340	1	5.00
+223	349	5	5.00
+224	334	5	20.00
+225	334	5	5.00
+229	347	5	12.00
+229	334	5	5.00
+--------------
+select * from selects
+--------------
+
+customerID	showingID	rating	paid
+222	333	5	4.00
+222	340	1	12.00
+222	334	5	10.00
+222	346	4	5.00
+223	334	5	30.00
+223	340	1	5.00
+223	349	5	5.00
+224	334	5	20.00
+225	334	5	5.00
+229	347	5	12.00
+229	334	5	5.00
+--------------
+select * from showing
+--------------
+
+showingID	showingDate	showingTime	showingRoomNum	showingMovieID
+333	2016-02-11	21:30:00	1	100
+334	2016-02-11	19:30:00	2	100
+335	2016-02-11	19:00:00	3	101
+336	2016-02-11	21:00:00	2	111
+337	2016-03-12	19:00:00	1	102
+338	2016-03-12	21:00:00	1	103
+339	2016-03-13	19:00:00	2	103
+340	2016-03-20	19:00:00	1	103
+341	2016-03-20	21:00:00	1	104
+342	2016-03-20	19:00:00	2	109
+344	2016-03-21	19:00:00	1	110
+345	2016-03-22	21:00:00	3	108
+346	2016-03-22	20:30:00	2	107
+347	2016-03-23	22:00:00	1	110
+348	2016-03-22	16:30:00	4	112
+349	2016-03-24	16:30:00	4	112
+--------------
+select * from theatre
+--------------
+
+roomNum	capacity
+1	30
+2	5
+3	100
+4	30
+5	6
+--------------
+delete selects
+    from selects
+    left join showing on selects.showingID = showing.showingID
+    where showingRoomNum=3
+--------------
+
+--------------
+delete from showing where showingRoomNum=3
+--------------
+
+--------------
+delete from theatre where roomNum=3
+--------------
+
+--------------
+select * from selects
+--------------
+
+customerID	showingID	rating	paid
+222	333	5	4.00
+222	340	1	12.00
+222	334	5	10.00
+222	346	4	5.00
+223	334	5	30.00
+223	340	1	5.00
+223	349	5	5.00
+224	334	5	20.00
+225	334	5	5.00
+229	347	5	12.00
+229	334	5	5.00
+--------------
+select * from showing
+--------------
+
+showingID	showingDate	showingTime	showingRoomNum	showingMovieID
+333	2016-02-11	21:30:00	1	100
+334	2016-02-11	19:30:00	2	100
+336	2016-02-11	21:00:00	2	111
+337	2016-03-12	19:00:00	1	102
+338	2016-03-12	21:00:00	1	103
+339	2016-03-13	19:00:00	2	103
+340	2016-03-20	19:00:00	1	103
+341	2016-03-20	21:00:00	1	104
+342	2016-03-20	19:00:00	2	109
+344	2016-03-21	19:00:00	1	110
+346	2016-03-22	20:30:00	2	107
+347	2016-03-23	22:00:00	1	110
+348	2016-03-22	16:30:00	4	112
+349	2016-03-24	16:30:00	4	112
+--------------
+select * from theatre
+--------------
+
+roomNum	capacity
+1	30
+2	5
+4	30
+5	6

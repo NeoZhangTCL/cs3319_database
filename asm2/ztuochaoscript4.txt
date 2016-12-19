@@ -1,0 +1,39 @@
+use ztuochaodb
+
+create view ztuochaoview as
+    select distinct c.firstname,c.lastname,sel.rating,m.movieName
+    from selects sel
+    left outer join customer c
+        on sel.customerID=c.customerID
+    left outer join showing sho
+        on sho.showingID=sel.showingID
+    left outer join movie m
+        on sho.showingMovieID=m.movieID;
+
+select * from ztuochaoview;
+
+select * from customer;
+select * from selects;
+
+delete selects
+    from selects
+    left join customer on selects.customerID = customer.customerID
+    where lastname="Trump";
+
+delete from customer where lastname="Trump";
+
+select * from customer;
+select * from selects;
+
+select * from selects;
+select * from showing;
+select * from theatre;
+delete selects
+    from selects
+    left join showing on selects.showingID = showing.showingID
+    where showingRoomNum=3;
+delete from showing where showingRoomNum=3;
+delete from theatre where roomNum=3;
+select * from selects;
+select * from showing;
+select * from theatre;

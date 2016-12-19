@@ -1,0 +1,226 @@
+--------------
+select firstname from customer
+    inner join
+    (select lastname
+        from customer
+        group by lastname
+        having count(lastname) > 1) counter
+        on customer.lastname = counter.lastname
+--------------
+
+firstname
+Bill
+Hillary
+--------------
+select firstname from customer
+    inner join
+    (select lastname
+        from customer
+        group by lastname
+        having count(lastname) = 1) counter
+        on customer.lastname = counter.lastname
+--------------
+
+firstname
+Will
+Neo
+Donald
+Gary
+Sue
+Barack
+--------------
+select firstname, lastname, email
+    from customer
+    where sex="M"
+--------------
+
+firstname	lastname	email
+Will	Beldman	wbeldma@uwo.ca
+Neo	Zhang	ztuochao@uwo.ca
+Bill	Clinton	billy@prez.com
+Donald	Trump	nextprezalso@prez.com
+Gary	Johnson	nextpreztoo@prez.com
+Barack	Obama	lastprez@prez.com
+--------------
+select movieName
+    from movie as m
+    inner join genre as g
+        on m.movieID = g.movieID
+    where g.genreName = "Comedy"
+--------------
+
+movieName
+There's Something About Mary
+Two Weeks Notice
+Tommy Boy
+Back To The Future
+--------------
+select movieName, relasedYear
+    from movie
+    where relasedYear like '19%'
+    order by relasedYear
+--------------
+
+movieName	relasedYear
+Star Wars	1977
+The Empire Strikes Back	1980
+Back To The Future	1985
+Die Hard	1988
+Pulp Fiction	1994
+The Shawshank Redemption	1994
+Tommy Boy	1995
+Midnight In The Garden Of Good and Evil	1997
+There's Something About Mary	1998
+--------------
+select date_format(showingDate,'%M-%d-%Y') as 'Showing Date',
+      time_format(showingTime, '%h:%i:%s %p') as 'Showing Time',
+      capacity
+      from showing as s
+      inner join theatre as t
+          on s.showingRoomNum = t.roomNum
+      where s.showingMovieID = 100
+--------------
+
+Showing Date	Showing Time	capacity
+February-11-2016	09:30:00 PM	30
+February-11-2016	07:30:00 PM	5
+--------------
+select movieName
+    from movie
+    where movieName like "%the%"
+--------------
+
+movieName
+The Martian
+The Empire Strikes Back
+Midnight In The Garden Of Good and Evil
+There's Something About Mary
+Back To The Future
+The Shawshank Redemption
+--------------
+select firstname, lastname, movieName
+    from selects sel
+    left outer join showing sho
+        on sel.showingID=sho.showingID
+    left outer join customer c
+        on sel.customerID=c.customerID
+    left outer join movie m
+        on sho.showingMovieID=m.movieID
+    where showingDate > '2016-03-01'
+--------------
+
+firstname	lastname	movieName
+Will	Beldman	Aloha
+Will	Beldman	Tommy Boy
+Neo	Zhang	Aloha
+Neo	Zhang	The Shawshank Redemption
+Barack	Obama	Two Weeks Notice
+--------------
+select distinct firstname, lastname
+    from selects sel
+    left outer join showing sho
+        on sel.showingID=sho.showingID
+    left outer join customer c
+        on sel.customerID=c.customerID
+    left outer join movie m
+        on sho.showingMovieID=m.movieID
+    left outer join genre g
+        on m.movieID = g.movieID
+    where genreName = "SciFi"
+--------------
+
+firstname	lastname
+Will	Beldman
+Neo	Zhang
+Bill	Clinton
+Donald	Trump
+Hillary	Clinton
+Barack	Obama
+--------------
+select movieName
+    from movie
+    left outer join showing
+        on movie.movieID = showing.showingMovieID
+    where showingID is null
+--------------
+
+movieName
+The Empire Strikes Back
+Midnight In The Garden Of Good and Evil
+--------------
+select movieName
+    from
+        (select distinct showingMovieID, movieName
+        from showing sho
+        left outer join selects sel
+            on sho.showingID = sel.showingID
+        left outer join movie m
+            on sho.showingMovieID=m.movieID
+        where customerID is null
+        ) temp1
+    where temp1.showingMovieID not in
+        (select distinct showingMovieID
+        from showing sho
+        left outer join selects sel
+            on sho.showingID = sel.showingID
+        left outer join movie m
+            on sho.showingMovieID=m.movieID
+        where customerID is not null)
+--------------
+
+movieName
+Up
+Pulp Fiction
+The Martian
+Die Hard
+There's Something About Mary
+Back To The Future
+--------------
+select movieName
+    from movie
+    where movieID not in
+    (select distinct showingMovieID from selects left outer join showing on selects.showingID = showing.showingID)
+--------------
+
+movieName
+Up
+Pulp Fiction
+The Martian
+The Empire Strikes Back
+Midnight In The Garden Of Good and Evil
+Die Hard
+There's Something About Mary
+Back To The Future
+--------------
+select relasedYear, count(movieID) from movie group by relasedYear
+--------------
+
+relasedYear	count(movieID)
+1977	1
+1980	1
+1985	1
+1988	1
+1994	2
+1995	1
+1997	1
+1998	1
+2002	1
+2009	1
+2015	2
+--------------
+select count(sel.customerID), t.roomNum
+    from selects sel
+    left outer join showing sho
+        on sel.showingID = sho.showingID
+    left outer join theatre t
+       on sho.showingRoomNum = t.roomNum
+    group by sho.showingID
+--------------
+
+count(sel.customerID)	roomNum
+1	1
+6	2
+2	1
+1	2
+1	1
+1	4

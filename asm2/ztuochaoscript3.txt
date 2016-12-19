@@ -1,0 +1,106 @@
+use ztuochaodb
+
+select firstname from customer
+    inner join
+    (select lastname
+        from customer
+        group by lastname
+        having count(lastname) > 1) counter
+        on customer.lastname = counter.lastname;
+
+select firstname from customer
+    inner join
+    (select lastname
+        from customer
+        group by lastname
+        having count(lastname) = 1) counter
+        on customer.lastname = counter.lastname;
+
+select firstname, lastname, email
+    from customer
+    where sex="M";
+
+select movieName
+    from movie as m
+    inner join genre as g
+        on m.movieID = g.movieID
+    where g.genreName = "Comedy";
+
+select movieName, relasedYear
+    from movie
+    where relasedYear like '19%'
+    order by relasedYear;
+
+select date_format(showingDate,'%M-%d-%Y') as 'Showing Date',
+      time_format(showingTime, '%h:%i:%s %p') as 'Showing Time',
+      capacity
+      from showing as s
+      inner join theatre as t
+          on s.showingRoomNum = t.roomNum
+      where s.showingMovieID = 100 ;
+
+select movieName
+    from movie
+    where movieName like "%the%";
+
+select firstname, lastname, movieName
+    from selects sel
+    left outer join showing sho
+        on sel.showingID=sho.showingID
+    left outer join customer c
+        on sel.customerID=c.customerID
+    left outer join movie m
+        on sho.showingMovieID=m.movieID
+    where showingDate > '2016-03-01';
+
+select distinct firstname, lastname
+    from selects sel
+    left outer join showing sho
+        on sel.showingID=sho.showingID
+    left outer join customer c
+        on sel.customerID=c.customerID
+    left outer join movie m
+        on sho.showingMovieID=m.movieID
+    left outer join genre g
+        on m.movieID = g.movieID
+    where genreName = "SciFi";
+
+select movieName
+    from movie
+    left outer join showing
+        on movie.movieID = showing.showingMovieID
+    where showingID is null;
+
+select movieName
+    from
+        (select distinct showingMovieID, movieName
+        from showing sho
+        left outer join selects sel
+            on sho.showingID = sel.showingID
+        left outer join movie m
+            on sho.showingMovieID=m.movieID
+        where customerID is null
+        ) temp1
+    where temp1.showingMovieID not in
+        (select distinct showingMovieID
+        from showing sho
+        left outer join selects sel
+            on sho.showingID = sel.showingID
+        left outer join movie m
+            on sho.showingMovieID=m.movieID
+        where customerID is not null);
+
+select movieName
+    from movie
+    where movieID not in
+    (select distinct showingMovieID from selects left outer join showing on selects.showingID = showing.showingID);
+
+select relasedYear, count(movieID) from movie group by relasedYear;
+
+select count(sel.customerID), t.roomNum
+    from selects sel
+    left outer join showing sho
+        on sel.showingID = sho.showingID
+    left outer join theatre t
+       on sho.showingRoomNum = t.roomNum
+    group by sho.showingID;

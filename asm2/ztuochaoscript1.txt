@@ -1,0 +1,59 @@
+show databases;
+
+drop database ztuochaodb;
+
+create database ztuochaodb;
+
+use ztuochaodb;
+
+show tables;
+
+create table movie (
+    movieID int(3),
+    movieName varchar(50),
+    relasedYear int(4),
+    primary key(movieID)
+);
+
+create table genre (
+    genreName varchar(30),
+    movieID int(3),
+    foreign key(movieID) references movie(movieID)
+);
+
+create table theatre (
+    roomNum int,
+    capacity int,
+    primary key(roomNum)
+);
+
+create table showing (
+    showingID int(3),
+    showingDate date,
+    showingTime time,
+    showingRoomNum int,
+    showingMovieID int(3),
+    primary key(showingID),
+    foreign key(showingRoomNum) references theatre(RoomNum),
+    foreign key(showingMovieID) references movie(movieID)
+);
+
+create table customer(
+    customerID int(3),
+    firstname varchar(30) not null,
+    lastname varchar(30) not null,
+    sex varchar(1),
+    email varchar(30),
+    primary key(customerID)
+);
+
+create table selects(
+    customerID int(3),
+    showingID int(3),
+    rating int(1),
+    paid decimal(5,2),
+    foreign key(showingID) references showing(showingID),
+    foreign key(customerID) references customer(customerID)
+);
+
+show tables;
